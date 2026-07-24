@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subject {
+  id        String   @id @default(uuid())
+  name      String
+  code      String
+  semester  Int
+  color     String   @default("#2563EB")
+  professor String?
+  credits   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lectures  Lecture[]
+  notes     Note[]
+  attendance AttendanceRecord[]
+}
+
+model Lecture {
+  id        String   @id @default(uuid())
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  date      String
+  startTime String
+  endTime   String
+  dayOfWeek Int
+  room      String?
+  type      String   @default("theory")
+  createdAt DateTime @default(now())
+  notes     Note[]
+  attendance AttendanceRecord[]
+}
+
+model Note {
+  id                String   @id @default(uuid())
+  subjectId         String
+  subject           Subject  @relation(fields: [subjectId], references: [id])
+  lectureId         String?
+  lecture           Lecture? @relation(fields: [lectureId], references: [id])
+  lectureNumber     Int
+  title             String
+  content           String   @default("")
+  summary           String?
+  revisionNotes     String?
+  importantQuestions String?
+  aiSuggestions     String?
+  type              String   @default("normal")
+  tags              String   @default("")
+  completed         Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model AttendanceRecord {
+  id        String   @id @default(uuid())
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  lectureId String?
+  lecture   Lecture? @relation(fields: [lectureId], references: [id])
+  date      String
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model TimetableEntry {
+  id          String @id @default(uuid())
+  subjectId   String
+  subjectName String
+  dayOfWeek   Int
+  startTime   String
+  endTime     String
+  room        String?
+  type        String @default("theory")
+  color       String @default("#2563EB")
+  semester    Int
+}
+
+model CalendarEvent {
+  id          String  @id @default(uuid())
+  title       String
+  date        String
+  startTime   String?
+  endTime     String?
+  type        String  @default("personal")
+  subjectId   String?
+  subjectName String?
+  color       String  @default("#2563EB")
+  description String?
+}
