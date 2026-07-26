@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { api } from "../lib/api-client"
-import type { Settings, Attendance, Note, Subject, Timetable, CalendarEvent, HandwritingFont } from "../types"
+import type { Settings, Attendance, Note, Subject, Timetable, CalendarEvent, HandwritingFont, NotebookPage } from "../types"
 
 const defaultSettings: Settings = {
   theme: "light",
@@ -35,6 +35,12 @@ interface AppState {
   updateNote: (id: string, data: Partial<Note>) => Promise<void>
   deleteNote: (id: string) => Promise<void>
 
+  addPageToNote: (noteId: string, page?: Partial<NotebookPage>) => void
+  updatePageInNote: (noteId: string, pageId: string, data: Partial<NotebookPage>) => void
+  deletePageFromNote: (noteId: string, pageId: string) => void
+  duplicatePageInNote: (noteId: string, pageId: string) => void
+  reorderPagesInNote: (noteId: string, pageId: string, direction: "up" | "down") => void
+
   timetable: Timetable[]
   addTimetableEntry: (entry: Omit<Timetable, "id">) => Promise<void>
   removeTimetableEntry: (id: string) => Promise<void>
@@ -57,6 +63,19 @@ interface AppState {
   setSidebarOpen: (open: boolean) => void
 
   initialize: () => Promise<void>
+}
+
+function createDefaultPage(note: Note): NotebookPage {
+  return {
+    id: `page-init-${note.id}`,
+    pageNumber: 1,
+    title: "Page 1",
+    content: note.content || "",
+    status: note.content ? "in-progress" : "blank",
+    wordCount: (note.content || "").split(/\s+/).filter(Boolean).length,
+    createdAt: note.createdAt,
+    updatedAt: note.updatedAt,
+  }
 }
 
 let settingsCache = defaultSettings
@@ -166,6 +185,114 @@ export const useStore = create<AppState>((set, get) => ({
     } catch {
       // already removed locally
     }
+  },
+
+  addPageToNote: (noteId, page) => {
+    set((s) => ({
+      notes: s.notes.map((n) => {
+        if (n.id !== noteId) return n
+        const pages = n.pages || [createDefaultPage(n)]
+        const newPage: NotebookPage = {
+          id: `page-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+          pageNumber: pages.length + 1,
+          title: `Page ${pages.length + 1}`,
+          content: "",
+          status: "blank",
+          wordCount: 0,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          ...page,
+        }
+        return { ...n, pages: [...pages, newPage] }
+      }),
+    }))
+  },
+
+  updatePageInNote: (noteId, pageId, data) => {
+    set((s) => ({
+      notes: s.notes.map((n) => {
+        if (n.id !== noteId) return n
+        const pages = n.pages || [createDefaultPage(n)]
+        return {
+          ...n,
+          pages: pages.map((p) =>
+            p.id === pageId ? { ...p, ...data, updatedAt: new Date().toISOString() } : p
+          ),
+        }
+      }),
+    }))
+  },
+
+  deletePageFromNote: (noteId, pageId) => {
+    set((s) => ({
+      notes: s.notes.map((n) => {
+        if (n.id !== noteId) return n
+        const pages = (n.pages || [createDefaultPage(n)]).filter((p) => p.id !== pageId)
+        if (pages.length === 0) {
+          const blank: NotebookPage = {
+            id: `page-${Date.now()}-blank`,
+            pageNumber: 1,
+            title: "Page 1",
+            content: "",
+            status: "blank",
+            wordCount: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          }
+          return { ...n, pages: [blank] }
+        }
+        return {
+          ...n,
+          pages: pages.map((p, i) => ({ ...p, pageNumber: i + 1 })),
+        }
+      }),
+    }))
+  },
+
+  duplicatePageInNote: (noteId, pageId) => {
+    set((s) => ({
+      notes: s.notes.map((n) => {
+        if (n.id !== noteId) return n
+        const pages = n.pages || [createDefaultPage(n)]
+        const idx = pages.findIndex((p) => p.id === pageId)
+        if (idx === -1) return n
+        const source = pages[idx]
+        const dup: NotebookPage = {
+          ...source,
+          id: `page-${Date.now()}-dup`,
+          pageNumber: idx + 2,
+          title: `${source.title} (copy)`,
+          status: source.status,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+        const updated = [...pages]
+        updated.splice(idx + 1, 0, dup)
+        return {
+          ...n,
+          pages: updated.map((p, i) => ({ ...p, pageNumber: i + 1 })),
+        }
+      }),
+    }))
+  },
+
+  reorderPagesInNote: (noteId, pageId, direction) => {
+    set((s) => ({
+      notes: s.notes.map((n) => {
+        if (n.id !== noteId) return n
+        const pages = n.pages || [createDefaultPage(n)]
+        const idx = pages.findIndex((p) => p.id === pageId)
+        if (idx === -1) return n
+        const swap = direction === "up" ? idx - 1 : idx + 1
+        if (swap < 0 || swap >= pages.length) return n
+        const updated = [...pages]
+        ;[updated[idx], updated[swap]] = [updated[swap], updated[idx]]
+        return {
+          ...n,
+          pages: updated.map((p, i) => ({ ...p, pageNumber: i + 1 })),
+        }
+      }),
+    }))
   },
 
   addTimetableEntry: async (entry) => {

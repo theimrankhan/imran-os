@@ -54,6 +54,18 @@ export interface AttendanceRecord {
   lectureId?: string
 }
 
+export interface NotebookPage {
+  id: string
+  pageNumber: number
+  title: string
+  content: string
+  status: "blank" | "in-progress" | "completed" | "needs-revision" | "ai-generated"
+  aiSuggestions?: string
+  wordCount: number
+  createdAt: string
+  updatedAt: string
+}
+
 export interface Note {
   id: string
   subjectId: string
@@ -61,6 +73,7 @@ export interface Note {
   lectureNumber: number
   title: string
   content: string
+  pages?: NotebookPage[]
   summary?: string
   revisionNotes?: string
   importantQuestions?: string
@@ -133,7 +146,7 @@ export interface Settings {
   }
   calendar: {
     defaultView: "month" | "week" | "day"
-    weekStartsOn: 0 | 1
+    weekStartsOn: number
   }
   pdf: {
     defaultExport: "notes" | "handwritten"

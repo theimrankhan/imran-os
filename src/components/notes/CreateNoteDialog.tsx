@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "../ui/select"
 import { useStore } from "../../stores/appStore"
-import type { Note } from "../../types"
+import type { Note, NotebookPage } from "../../types"
 
 interface CreateNoteDialogProps {
   open: boolean
@@ -63,6 +63,18 @@ export default function CreateNoteDialog({ open, onOpenChange }: CreateNoteDialo
       completed: false,
       createdAt: now,
       updatedAt: now,
+      pages: [
+        {
+          id: `page-init-${Date.now()}`,
+          pageNumber: 1,
+          title: "Page 1",
+          content: "",
+          status: "blank",
+          wordCount: 0,
+          createdAt: now,
+          updatedAt: now,
+        },
+      ],
     }
 
     addNote(newNote)
