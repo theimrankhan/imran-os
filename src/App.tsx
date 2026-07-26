@@ -7,10 +7,8 @@ import Dashboard from "./pages/Dashboard"
 import TimetablePage from "./pages/TimetablePage"
 import AttendancePage from "./pages/AttendancePage"
 import NotesPage from "./pages/NotesPage"
-import AIAssistantPage from "./pages/AIAssistantPage"
 import SubjectsPage from "./pages/SubjectsPage"
 import SettingsPage from "./pages/SettingsPage"
-import HandwrittenPage from "./pages/HandwrittenPage"
 import { CalendarPage } from "./pages/CalendarPage"
 
 function Router() {
@@ -23,9 +21,7 @@ function Router() {
       case "/timetable": return <TimetablePage />
       case "/attendance": return <AttendancePage />
       case "/notes": return <NotesPage />
-      case "/handwritten": return <HandwrittenPage />
       case "/subjects": return <SubjectsPage />
-      case "/ai": return <AIAssistantPage />
       case "/settings": return <SettingsPage />
       default: return <Dashboard />
     }

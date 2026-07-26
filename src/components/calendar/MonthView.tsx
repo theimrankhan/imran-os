@@ -4,7 +4,7 @@ import { cn } from "../../lib/utils"
 
 interface MonthViewProps {
   currentDate: Date
-  weekStartsOn: 0 | 1
+  weekStartsOn: number
   events: { date: string; color: string; title: string; id: string }[]
   selectedDate: Date | null
   onSelectDate: (date: Date) => void

@@ -15,7 +15,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight"
 import { common, createLowlight } from "lowlight"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  Undo2, Redo2, Bold, Italic, Heading1, List, Image as ImageIcon,
+  Undo2, Redo2, Bold, Italic, Heading1, List, Code2, Image as ImageIcon,
   Table2, Settings2, ZoomIn, ZoomOut, Maximize,
   ChevronLeft, ChevronRight, Plus, MoreHorizontal,
   Trash2, Copy, ArrowUp, ArrowDown,
@@ -181,6 +181,7 @@ export default function NotebookWriter({ noteId, currentPageIndex, onPageChange 
       case "italic": editor.chain().toggleItalic().run(); break
       case "heading": editor.chain().toggleHeading({ level: 2 }).run(); break
       case "bullet": editor.chain().toggleBulletList().run(); break
+      case "code": editor.chain().toggleCodeBlock().run(); break
     }
   }, [editor])
 
@@ -300,6 +301,10 @@ export default function NotebookWriter({ noteId, currentPageIndex, onPageChange 
         <button onClick={() => handleToolAction("bullet")}
           className={cn("p-1.5 rounded-lg hover:bg-muted text-muted-foreground", editor?.isActive("bulletList") && "bg-muted text-foreground")} title="Bullet List">
           <List className="h-4 w-4" />
+        </button>
+        <button onClick={() => handleToolAction("code")}
+          className={cn("p-1.5 rounded-lg hover:bg-muted text-muted-foreground", editor?.isActive("codeBlock") && "bg-muted text-foreground")} title="Code Block">
+          <Code2 className="h-4 w-4" />
         </button>
 
         <div className="w-px h-5 bg-border/50 mx-2" />
@@ -491,12 +496,66 @@ export default function NotebookWriter({ noteId, currentPageIndex, onPageChange 
                   }
                   .notebook-editor img { max-width: 100%; border-radius: 8px; margin: 0.5em 0; }
                   .notebook-editor code {
-                    font-family: 'Caveat', monospace; background: ${inkColor}11;
-                    padding: 0.2em 0.4em; border-radius: 3px; font-size: 0.9em; color: ${inkColor};
+                    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+                    background: ${inkColor}11;
+                    padding: 0.2em 0.4em;
+                    border-radius: 3px;
+                    font-size: 0.85em;
+                    color: ${inkColor};
                   }
                   .notebook-editor pre {
-                    background: ${inkColor}08; border: 1px solid ${inkColor}15; border-radius: 6px;
-                    padding: 1em; overflow-x: auto; color: ${inkColor};
+                    background: #1e1e2e;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: 8px;
+                    padding: 1em;
+                    overflow-x: auto;
+                    margin: 0.5em 0;
+                  }
+                  .notebook-editor pre code {
+                    background: none;
+                    padding: 0;
+                    border-radius: 0;
+                    font-size: 0.78em;
+                    color: #cdd6f4;
+                    line-height: 1.6;
+                    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+                  }
+                  .notebook-editor .hljs-keyword { color: #cba6f7; }
+                  .notebook-editor .hljs-string { color: #a6e3a1; }
+                  .notebook-editor .hljs-number { color: #fab387; }
+                  .notebook-editor .hljs-comment { color: #6c7086; font-style: italic; }
+                  .notebook-editor .hljs-function { color: #89b4fa; }
+                  .notebook-editor .hljs-title { color: #89b4fa; }
+                  .notebook-editor .hljs-built_in { color: #f38ba8; }
+                  .notebook-editor .hljs-type { color: #f9e2af; }
+                  .notebook-editor .hljs-literal { color: #fab387; }
+                  .notebook-editor .hljs-attr { color: #89dceb; }
+                  .notebook-editor .hljs-attribute { color: #89dceb; }
+                  .notebook-editor .hljs-selector-tag { color: #cba6f7; }
+                  .notebook-editor .hljs-selector-class { color: #89dceb; }
+                  .notebook-editor .hljs-selector-id { color: #f38ba8; }
+                  .notebook-editor .hljs-tag { color: #f38ba8; }
+                  .notebook-editor .hljs-name { color: #f38ba8; }
+                  .notebook-editor .hljs-params { color: #f2cdcd; }
+                  .notebook-editor .hljs-meta { color: #6c7086; }
+                  .notebook-editor .hljs-punctuation { color: #bac2de; }
+                  .notebook-editor .hljs-operator { color: #89dceb; }
+                  .notebook-editor .hljs-variable { color: #f2cdcd; }
+                  .notebook-editor .hljs-regexp { color: #f5c2e7; }
+                  .notebook-editor .hljs-symbol { color: #f2cdcd; }
+                  .notebook-editor .hljs-section { color: #89b4fa; font-weight: bold; }
+                  .notebook-editor .hljs-link { color: #89b4fa; text-decoration: underline; }
+                  .notebook-editor .hljs-deletion { color: #f38ba8; background: rgba(243,139,168,0.1); }
+                  .notebook-editor .hljs-addition { color: #a6e3a1; background: rgba(166,227,161,0.1); }
+                  .notebook-editor pre::before {
+                    content: "code";
+                    display: block;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 0.65em;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    color: #6c7086;
+                    margin-bottom: 0.5em;
                   }
                   .notebook-editor strong, .notebook-editor em { color: ${inkColor}; }
                   .notebook-editor a { color: ${inkColor}; text-decoration: underline; text-underline-offset: 2px; }

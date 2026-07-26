@@ -54,6 +54,7 @@ export const ModelName = {
   Note: 'Note',
   AttendanceRecord: 'AttendanceRecord',
   TimetableEntry: 'TimetableEntry',
+  TimetableException: 'TimetableException',
   CalendarEvent: 'CalendarEvent'
 } as const
 
@@ -150,6 +151,20 @@ export const TimetableEntryScalarFieldEnum = {
 } as const
 
 export type TimetableEntryScalarFieldEnum = (typeof TimetableEntryScalarFieldEnum)[keyof typeof TimetableEntryScalarFieldEnum]
+
+
+export const TimetableExceptionScalarFieldEnum = {
+  id: 'id',
+  entryId: 'entryId',
+  date: 'date',
+  status: 'status',
+  newStartTime: 'newStartTime',
+  newEndTime: 'newEndTime',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type TimetableExceptionScalarFieldEnum = (typeof TimetableExceptionScalarFieldEnum)[keyof typeof TimetableExceptionScalarFieldEnum]
 
 
 export const CalendarEventScalarFieldEnum = {

@@ -80,6 +80,19 @@ model TimetableEntry {
   type        String @default("theory")
   color       String @default("#2563EB")
   semester    Int
+  exceptions  TimetableException[]
+}
+
+model TimetableException {
+  id              String   @id @default(uuid())
+  entryId         String
+  entry           TimetableEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  date            String
+  status          String   @default("cancelled")
+  newStartTime    String?
+  newEndTime      String?
+  reason          String?
+  createdAt       DateTime @default(now())
 }
 
 model CalendarEvent {

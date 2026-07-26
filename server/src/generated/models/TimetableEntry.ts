@@ -260,6 +260,7 @@ export type TimetableEntryWhereInput = {
   type?: Prisma.StringFilter<"TimetableEntry"> | string
   color?: Prisma.StringFilter<"TimetableEntry"> | string
   semester?: Prisma.IntFilter<"TimetableEntry"> | number
+  exceptions?: Prisma.TimetableExceptionListRelationFilter
 }
 
 export type TimetableEntryOrderByWithRelationInput = {
@@ -273,6 +274,7 @@ export type TimetableEntryOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   color?: Prisma.SortOrder
   semester?: Prisma.SortOrder
+  exceptions?: Prisma.TimetableExceptionOrderByRelationAggregateInput
 }
 
 export type TimetableEntryWhereUniqueInput = Prisma.AtLeast<{
@@ -289,6 +291,7 @@ export type TimetableEntryWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.StringFilter<"TimetableEntry"> | string
   color?: Prisma.StringFilter<"TimetableEntry"> | string
   semester?: Prisma.IntFilter<"TimetableEntry"> | number
+  exceptions?: Prisma.TimetableExceptionListRelationFilter
 }, "id">
 
 export type TimetableEntryOrderByWithAggregationInput = {
@@ -336,6 +339,7 @@ export type TimetableEntryCreateInput = {
   type?: string
   color?: string
   semester: number
+  exceptions?: Prisma.TimetableExceptionCreateNestedManyWithoutEntryInput
 }
 
 export type TimetableEntryUncheckedCreateInput = {
@@ -349,6 +353,7 @@ export type TimetableEntryUncheckedCreateInput = {
   type?: string
   color?: string
   semester: number
+  exceptions?: Prisma.TimetableExceptionUncheckedCreateNestedManyWithoutEntryInput
 }
 
 export type TimetableEntryUpdateInput = {
@@ -362,6 +367,7 @@ export type TimetableEntryUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   semester?: Prisma.IntFieldUpdateOperationsInput | number
+  exceptions?: Prisma.TimetableExceptionUpdateManyWithoutEntryNestedInput
 }
 
 export type TimetableEntryUncheckedUpdateInput = {
@@ -375,6 +381,7 @@ export type TimetableEntryUncheckedUpdateInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
   color?: Prisma.StringFieldUpdateOperationsInput | string
   semester?: Prisma.IntFieldUpdateOperationsInput | number
+  exceptions?: Prisma.TimetableExceptionUncheckedUpdateManyWithoutEntryNestedInput
 }
 
 export type TimetableEntryCreateManyInput = {
@@ -465,6 +472,122 @@ export type TimetableEntrySumOrderByAggregateInput = {
   semester?: Prisma.SortOrder
 }
 
+export type TimetableEntryScalarRelationFilter = {
+  is?: Prisma.TimetableEntryWhereInput
+  isNot?: Prisma.TimetableEntryWhereInput
+}
+
+export type TimetableEntryCreateNestedOneWithoutExceptionsInput = {
+  create?: Prisma.XOR<Prisma.TimetableEntryCreateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedCreateWithoutExceptionsInput>
+  connectOrCreate?: Prisma.TimetableEntryCreateOrConnectWithoutExceptionsInput
+  connect?: Prisma.TimetableEntryWhereUniqueInput
+}
+
+export type TimetableEntryUpdateOneRequiredWithoutExceptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.TimetableEntryCreateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedCreateWithoutExceptionsInput>
+  connectOrCreate?: Prisma.TimetableEntryCreateOrConnectWithoutExceptionsInput
+  upsert?: Prisma.TimetableEntryUpsertWithoutExceptionsInput
+  connect?: Prisma.TimetableEntryWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TimetableEntryUpdateToOneWithWhereWithoutExceptionsInput, Prisma.TimetableEntryUpdateWithoutExceptionsInput>, Prisma.TimetableEntryUncheckedUpdateWithoutExceptionsInput>
+}
+
+export type TimetableEntryCreateWithoutExceptionsInput = {
+  id?: string
+  subjectId: string
+  subjectName: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  room?: string | null
+  type?: string
+  color?: string
+  semester: number
+}
+
+export type TimetableEntryUncheckedCreateWithoutExceptionsInput = {
+  id?: string
+  subjectId: string
+  subjectName: string
+  dayOfWeek: number
+  startTime: string
+  endTime: string
+  room?: string | null
+  type?: string
+  color?: string
+  semester: number
+}
+
+export type TimetableEntryCreateOrConnectWithoutExceptionsInput = {
+  where: Prisma.TimetableEntryWhereUniqueInput
+  create: Prisma.XOR<Prisma.TimetableEntryCreateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedCreateWithoutExceptionsInput>
+}
+
+export type TimetableEntryUpsertWithoutExceptionsInput = {
+  update: Prisma.XOR<Prisma.TimetableEntryUpdateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedUpdateWithoutExceptionsInput>
+  create: Prisma.XOR<Prisma.TimetableEntryCreateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedCreateWithoutExceptionsInput>
+  where?: Prisma.TimetableEntryWhereInput
+}
+
+export type TimetableEntryUpdateToOneWithWhereWithoutExceptionsInput = {
+  where?: Prisma.TimetableEntryWhereInput
+  data: Prisma.XOR<Prisma.TimetableEntryUpdateWithoutExceptionsInput, Prisma.TimetableEntryUncheckedUpdateWithoutExceptionsInput>
+}
+
+export type TimetableEntryUpdateWithoutExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectName?: Prisma.StringFieldUpdateOperationsInput | string
+  dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  room?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  semester?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type TimetableEntryUncheckedUpdateWithoutExceptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectId?: Prisma.StringFieldUpdateOperationsInput | string
+  subjectName?: Prisma.StringFieldUpdateOperationsInput | string
+  dayOfWeek?: Prisma.IntFieldUpdateOperationsInput | number
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  room?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  semester?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+
+/**
+ * Count Type TimetableEntryCountOutputType
+ */
+
+export type TimetableEntryCountOutputType = {
+  exceptions: number
+}
+
+export type TimetableEntryCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  exceptions?: boolean | TimetableEntryCountOutputTypeCountExceptionsArgs
+}
+
+/**
+ * TimetableEntryCountOutputType without action
+ */
+export type TimetableEntryCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimetableEntryCountOutputType
+   */
+  select?: Prisma.TimetableEntryCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TimetableEntryCountOutputType without action
+ */
+export type TimetableEntryCountOutputTypeCountExceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TimetableExceptionWhereInput
+}
 
 
 export type TimetableEntrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -478,6 +601,8 @@ export type TimetableEntrySelect<ExtArgs extends runtime.Types.Extensions.Intern
   type?: boolean
   color?: boolean
   semester?: boolean
+  exceptions?: boolean | Prisma.TimetableEntry$exceptionsArgs<ExtArgs>
+  _count?: boolean | Prisma.TimetableEntryCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["timetableEntry"]>
 
 export type TimetableEntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -520,10 +645,18 @@ export type TimetableEntrySelectScalar = {
 }
 
 export type TimetableEntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "subjectId" | "subjectName" | "dayOfWeek" | "startTime" | "endTime" | "room" | "type" | "color" | "semester", ExtArgs["result"]["timetableEntry"]>
+export type TimetableEntryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  exceptions?: boolean | Prisma.TimetableEntry$exceptionsArgs<ExtArgs>
+  _count?: boolean | Prisma.TimetableEntryCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type TimetableEntryIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type TimetableEntryIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $TimetableEntryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "TimetableEntry"
-  objects: {}
+  objects: {
+    exceptions: Prisma.$TimetableExceptionPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     subjectId: string
@@ -929,6 +1062,7 @@ readonly fields: TimetableEntryFieldRefs;
  */
 export interface Prisma__TimetableEntryClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  exceptions<T extends Prisma.TimetableEntry$exceptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TimetableEntry$exceptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TimetableExceptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -985,6 +1119,10 @@ export type TimetableEntryFindUniqueArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * Filter, which TimetableEntry to fetch.
    */
   where: Prisma.TimetableEntryWhereUniqueInput
@@ -1003,6 +1141,10 @@ export type TimetableEntryFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ex
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * Filter, which TimetableEntry to fetch.
    */
   where: Prisma.TimetableEntryWhereUniqueInput
@@ -1020,6 +1162,10 @@ export type TimetableEntryFindFirstArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the TimetableEntry
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
   /**
    * Filter, which TimetableEntry to fetch.
    */
@@ -1069,6 +1215,10 @@ export type TimetableEntryFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * Filter, which TimetableEntry to fetch.
    */
   where?: Prisma.TimetableEntryWhereInput
@@ -1117,6 +1267,10 @@ export type TimetableEntryFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * Filter, which TimetableEntries to fetch.
    */
   where?: Prisma.TimetableEntryWhereInput
@@ -1159,6 +1313,10 @@ export type TimetableEntryCreateArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the TimetableEntry
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
   /**
    * The data needed to create a TimetableEntry.
    */
@@ -1207,6 +1365,10 @@ export type TimetableEntryUpdateArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the TimetableEntry
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
   /**
    * The data needed to update a TimetableEntry.
    */
@@ -1274,6 +1436,10 @@ export type TimetableEntryUpsertArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * The filter to search for the TimetableEntry to update in case it exists.
    */
   where: Prisma.TimetableEntryWhereUniqueInput
@@ -1300,6 +1466,10 @@ export type TimetableEntryDeleteArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
+  /**
    * Filter which TimetableEntry to delete.
    */
   where: Prisma.TimetableEntryWhereUniqueInput
@@ -1320,6 +1490,30 @@ export type TimetableEntryDeleteManyArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * TimetableEntry.exceptions
+ */
+export type TimetableEntry$exceptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TimetableException
+   */
+  select?: Prisma.TimetableExceptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TimetableException
+   */
+  omit?: Prisma.TimetableExceptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableExceptionInclude<ExtArgs> | null
+  where?: Prisma.TimetableExceptionWhereInput
+  orderBy?: Prisma.TimetableExceptionOrderByWithRelationInput | Prisma.TimetableExceptionOrderByWithRelationInput[]
+  cursor?: Prisma.TimetableExceptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TimetableExceptionScalarFieldEnum | Prisma.TimetableExceptionScalarFieldEnum[]
+}
+
+/**
  * TimetableEntry without action
  */
 export type TimetableEntryDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1331,4 +1525,8 @@ export type TimetableEntryDefaultArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the TimetableEntry
    */
   omit?: Prisma.TimetableEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TimetableEntryInclude<ExtArgs> | null
 }

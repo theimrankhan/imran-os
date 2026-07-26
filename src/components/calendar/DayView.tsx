@@ -89,7 +89,7 @@ export default function DayView({ currentDate, timetable, onEventClick }: DayVie
               </div>
 
               <div className="flex-1 relative min-h-[72px] p-1">
-                {slotEvents.map((ev) => {
+                  {slotEvents.map((ev) => {
                   const startMin = getMinutesFromMidnight(ev.startTime)
                   const endMin = getMinutesFromMidnight(ev.endTime)
                   const top = ((startMin - hour * 60) / 60) * HOUR_HEIGHT

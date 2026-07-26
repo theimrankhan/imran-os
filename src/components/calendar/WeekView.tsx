@@ -3,7 +3,7 @@ import { cn } from "../../lib/utils"
 
 interface WeekViewProps {
   currentDate: Date
-  weekStartsOn: 0 | 1
+  weekStartsOn: number
   timetable: {
     dayOfWeek: number
     startTime: string

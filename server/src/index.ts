@@ -9,6 +9,7 @@ import lectureRoutes from "./routes/lectures.js"
 import noteRoutes from "./routes/notes.js"
 import attendanceRoutes from "./routes/attendance.js"
 import timetableRoutes from "./routes/timetable.js"
+import timetableExceptionRoutes from "./routes/timetableExceptions.js"
 import eventRoutes from "./routes/events.js"
 import aiRoutes from "./routes/ai.js"
 import { errorHandler } from "./middleware/errorHandler.js"
@@ -27,6 +28,7 @@ app.use("/api/v1/lectures", lectureRoutes(prisma))
 app.use("/api/v1/notes", noteRoutes(prisma))
 app.use("/api/v1/attendance", attendanceRoutes(prisma))
 app.use("/api/v1/timetable", timetableRoutes(prisma))
+app.use("/api/v1/timetable-exceptions", timetableExceptionRoutes(prisma))
 app.use("/api/v1/events", eventRoutes(prisma))
 app.use("/api/v1/ai", aiRoutes())
 

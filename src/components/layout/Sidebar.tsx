@@ -5,9 +5,7 @@ import {
   Table2,
   UserCheck,
   FileText,
-  PenTool,
   BookOpen,
-  Sparkles,
   Settings,
   ChevronLeft,
 } from "lucide-react"
@@ -20,9 +18,7 @@ const navItems = [
   { icon: Table2, label: "Timetable", href: "/timetable" },
   { icon: UserCheck, label: "Attendance", href: "/attendance" },
   { icon: FileText, label: "Notes", href: "/notes" },
-  { icon: PenTool, label: "Handwritten", href: "/handwritten" },
   { icon: BookOpen, label: "Subjects", href: "/subjects" },
-  { icon: Sparkles, label: "AI Assistant", href: "/ai" },
 ]
 
 interface SidebarProps {

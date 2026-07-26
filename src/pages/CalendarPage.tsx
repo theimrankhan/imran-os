@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useStore } from "../stores/appStore"
 import { PageContainer } from "../components/layout/PageContainer"
@@ -7,8 +7,8 @@ import WeekView from "../components/calendar/WeekView"
 import DayView from "../components/calendar/DayView"
 import CalendarHeader from "../components/calendar/CalendarHeader"
 import { EventDetail } from "../components/calendar/EventDetail"
-
-
+import LectureWorkspace from "../components/timetable/LectureWorkspace"
+import type { Timetable } from "../types"
 
 function getDateOfWeekDay(weekStart: Date, targetDayOfWeek: number): string {
   const d = new Date(weekStart)
@@ -18,7 +18,7 @@ function getDateOfWeekDay(weekStart: Date, targetDayOfWeek: number): string {
   return d.toISOString().split("T")[0]
 }
 
-function getWeekStart(date: Date, weekStartsOn: 0 | 1) {
+function getWeekStart(date: Date, weekStartsOn: number) {
   const d = new Date(date)
   const day = d.getDay()
   const diff = (day - weekStartsOn + 7) % 7
@@ -33,9 +33,16 @@ export function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<any>(null)
   const [eventDetailOpen, setEventDetailOpen] = useState(false)
+  const [workspaceEntry, setWorkspaceEntry] = useState<Timetable | null>(null)
 
   const { timetable, settings } = useStore()
   const weekStartsOn = settings.calendar.weekStartsOn
+
+  const lectureEntryMap = useMemo(() => {
+    const map = new Map<string, Timetable>()
+    timetable.forEach((t) => map.set(t.id, t))
+    return map
+  }, [timetable])
 
   const navigate = (direction: "prev" | "next" | "today") => {
     const d = new Date(currentDate)
@@ -51,6 +58,13 @@ export function CalendarPage() {
   }
 
   const handleEventClick = (event: any) => {
+    if (event.type === "lecture" || event.typeLabel === "lecture") {
+      const entry = lectureEntryMap.get(event.id)
+      if (entry) {
+        setWorkspaceEntry(entry)
+        return
+      }
+    }
     setSelectedEvent(event)
     setEventDetailOpen(true)
   }
@@ -128,6 +142,11 @@ export function CalendarPage() {
         event={selectedEvent}
         open={eventDetailOpen}
         onOpenChange={setEventDetailOpen}
+      />
+      <LectureWorkspace
+        entry={workspaceEntry}
+        open={workspaceEntry !== null}
+        onClose={() => setWorkspaceEntry(null)}
       />
     </PageContainer>
   )

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Sun, Moon, PenTool, Sparkles, FileText, CalendarDays, Download, Table2, Palette } from "lucide-react"
+import { Sun, Moon, PenTool, Sparkles, FileText, CalendarDays, Download, Table2, Palette, Upload } from "lucide-react"
 import { PageContainer } from "../components/layout/PageContainer"
 import { cn } from "../lib/utils"
 import { useStore } from "../stores/appStore"
@@ -11,11 +11,11 @@ import { Switch } from "../components/ui/switch"
 
 const sections = [
   { id: "appearance", label: "Appearance", icon: Palette },
-  { id: "handwriting", label: "Handwriting", icon: PenTool },
   { id: "ai", label: "AI Assistant", icon: Sparkles },
   { id: "notes", label: "Notes", icon: FileText },
   { id: "calendar", label: "Calendar", icon: CalendarDays },
   { id: "pdf", label: "PDF Export", icon: Download },
+  { id: "handwriting", label: "Handwriting", icon: PenTool },
   { id: "timetable", label: "Timetable", icon: Table2 },
 ]
 
@@ -79,58 +79,6 @@ export default function SettingsPage() {
                         </button>
                       ))}
                     </div>
-                  </SettingRow>
-                </SettingSection>
-              )}
-
-              {activeSection === "handwriting" && (
-                <SettingSection title="Handwriting" description="Configure handwritten note defaults">
-                  <SettingRow label="Default Ink Color">
-                    <div className="flex gap-2">
-                      {["blue", "black"].map((c) => (
-                        <button
-                          key={c}
-                          onClick={() => updateSettings({ handwriting: { ...settings.handwriting, inkColor: c as "blue" | "black" } })}
-                          className={cn(
-                            "px-4 py-2 rounded-lg border text-sm capitalize transition-all",
-                            settings.handwriting.inkColor === c
-                              ? "border-primary bg-primary/5 text-primary"
-                              : "border-border"
-                          )}
-                        >
-                          {c}
-                        </button>
-                      ))}
-                    </div>
-                  </SettingRow>
-                  <SettingRow label="Page Style">
-                    <div className="flex gap-2">
-                      {["notebook", "plain", "grid"].map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => updateSettings({ handwriting: { ...settings.handwriting, pageStyle: s as "notebook" | "plain" | "grid" } })}
-                          className={cn(
-                            "px-4 py-2 rounded-lg border text-sm capitalize transition-all",
-                            settings.handwriting.pageStyle === s
-                              ? "border-primary bg-primary/5 text-primary"
-                              : "border-border"
-                          )}
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </SettingRow>
-                  <SettingRow label="Font Size" description="Size of handwritten text">
-                    <input
-                      type="range"
-                      min="14"
-                      max="32"
-                      value={settings.handwriting.fontSize}
-                      onChange={(e) => updateSettings({ handwriting: { ...settings.handwriting, fontSize: parseInt(e.target.value) } })}
-                      className="w-48 accent-primary"
-                    />
-                    <span className="text-sm text-muted-foreground w-8">{settings.handwriting.fontSize}px</span>
                   </SettingRow>
                 </SettingSection>
               )}
@@ -251,10 +199,18 @@ export default function SettingsPage() {
                   </SettingRow>
                   <SettingRow label="Week starts on">
                     <div className="flex gap-2">
-                      {[{value: 0, label: "Sunday"}, {value: 1, label: "Monday"}].map((d) => (
+                      {[
+                        {value: 0, label: "Sunday"},
+                        {value: 1, label: "Monday"},
+                        {value: 2, label: "Tuesday"},
+                        {value: 3, label: "Wednesday"},
+                        {value: 4, label: "Thursday"},
+                        {value: 5, label: "Friday"},
+                        {value: 6, label: "Saturday"},
+                      ].map((d) => (
                         <button
                           key={d.value}
-                          onClick={() => updateSettings({ calendar: { ...settings.calendar, weekStartsOn: d.value as 0 | 1 } })}
+                          onClick={() => updateSettings({ calendar: { ...settings.calendar, weekStartsOn: d.value } })}
                           className={cn(
                             "px-4 py-2 rounded-lg border text-sm transition-all",
                             settings.calendar.weekStartsOn === d.value
@@ -308,6 +264,89 @@ export default function SettingsPage() {
                       ))}
                     </div>
                   </SettingRow>
+                </SettingSection>
+              )}
+
+              {activeSection === "handwriting" && (
+                <SettingSection title="Handwriting" description="Configure handwritten note defaults">
+                  <div className="space-y-4 mt-6 pt-6 border-t">
+                    <h3 className="text-sm font-semibold mb-3">Handwriting</h3>
+                    <SettingRow label="Default Ink Color">
+                      <div className="flex gap-2">
+                        {[
+                          { value: "#1a237e", label: "Blue", swatch: "bg-[#1a237e]" },
+                          { value: "#1a1a1a", label: "Black", swatch: "bg-[#1a1a1a]" },
+                        ].map((c) => (
+                          <button
+                            key={c.value}
+                            onClick={() => updateSettings({ handwriting: { ...settings.handwriting, inkColor: c.value } })}
+                            className={cn(
+                              "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all",
+                              settings.handwriting.inkColor === c.value
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border"
+                            )}
+                          >
+                            <span className={cn("h-4 w-4 rounded-full border", c.swatch)} />
+                            {c.label}
+                          </button>
+                        ))}
+                      </div>
+                    </SettingRow>
+                    <SettingRow label="Default Paper">
+                      <div className="flex gap-2">
+                        {["ruled", "grid", "plain"].map((style) => (
+                          <button
+                            key={style}
+                            onClick={() => updateSettings({ handwriting: { ...settings.handwriting, pageStyle: style as any } })}
+                            className={cn(
+                              "px-3 py-2 rounded-lg border text-sm transition-all capitalize",
+                              settings.handwriting.pageStyle === style
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border"
+                            )}
+                          >
+                            {style}
+                          </button>
+                        ))}
+                      </div>
+                    </SettingRow>
+                    <SettingRow label="Default Font Size">
+                      <div className="flex gap-2">
+                        {[
+                          { value: 28, label: "Small" },
+                          { value: 36, label: "Medium" },
+                          { value: 44, label: "Large" },
+                        ].map((opt) => (
+                          <button
+                            key={opt.value}
+                            onClick={() => updateSettings({ handwriting: { ...settings.handwriting, fontSize: opt.value } })}
+                            className={cn(
+                              "px-3 py-2 rounded-lg border text-sm transition-all",
+                              settings.handwriting.fontSize === opt.value
+                                ? "border-primary bg-primary/5 text-primary"
+                                : "border-border"
+                            )}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </SettingRow>
+                    <SettingRow label="Custom Handwriting">
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground/60">
+                          Upload your own handwriting character pack to personalize the output.
+                        </p>
+                        <div className="flex items-center gap-2 p-3 rounded-lg border border-dashed border-muted-foreground/20 bg-muted/5">
+                          <Upload className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground/60">
+                            Character pack upload coming soon
+                          </span>
+                        </div>
+                      </div>
+                    </SettingRow>
+                  </div>
                 </SettingSection>
               )}
 

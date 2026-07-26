@@ -41,12 +41,6 @@ const DAYS = [
 ]
 
 const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8]
-const TIME_SLOTS = Array.from({ length: 22 }, (_, i) => {
-  const h = Math.floor(i / 2) + 8
-  const m = i % 2 === 0 ? "00" : "30"
-  return `${String(h).padStart(2, "0")}:${m}`
-})
-
 const SUBJECT_COLORS = [
   "#2563EB", "#7C3AED", "#16A34A", "#DC2626", "#F59E0B",
   "#EC4899", "#06B6D4", "#8B5CF6", "#84CC16", "#F97316",
@@ -293,34 +287,12 @@ export default function AddLectureDialog({
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="startTime">Start Time</Label>
-              <Select value={startTime} onValueChange={setStartTime}>
-                <SelectTrigger id="startTime">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-48">
-                  {TIME_SLOTS.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input id="startTime" type="time" step="300" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="font-mono" />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="endTime">End Time</Label>
-              <Select value={endTime} onValueChange={setEndTime}>
-                <SelectTrigger id="endTime">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-48">
-                  {TIME_SLOTS.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Input id="endTime" type="time" step="300" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="font-mono" />
             </div>
           </div>
 

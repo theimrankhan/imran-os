@@ -70,6 +70,11 @@ export type AttendanceRecord = Prisma.AttendanceRecordModel
  */
 export type TimetableEntry = Prisma.TimetableEntryModel
 /**
+ * Model TimetableException
+ * 
+ */
+export type TimetableException = Prisma.TimetableExceptionModel
+/**
  * Model CalendarEvent
  * 
  */

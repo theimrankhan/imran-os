@@ -395,6 +395,7 @@ export const ModelName = {
   Note: 'Note',
   AttendanceRecord: 'AttendanceRecord',
   TimetableEntry: 'TimetableEntry',
+  TimetableException: 'TimetableException',
   CalendarEvent: 'CalendarEvent'
 } as const
 
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "subject" | "lecture" | "note" | "attendanceRecord" | "timetableEntry" | "calendarEvent"
+    modelProps: "subject" | "lecture" | "note" | "attendanceRecord" | "timetableEntry" | "timetableException" | "calendarEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -785,6 +786,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TimetableException: {
+      payload: Prisma.$TimetableExceptionPayload<ExtArgs>
+      fields: Prisma.TimetableExceptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TimetableExceptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TimetableExceptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        findFirst: {
+          args: Prisma.TimetableExceptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TimetableExceptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        findMany: {
+          args: Prisma.TimetableExceptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>[]
+        }
+        create: {
+          args: Prisma.TimetableExceptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        createMany: {
+          args: Prisma.TimetableExceptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TimetableExceptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>[]
+        }
+        delete: {
+          args: Prisma.TimetableExceptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        update: {
+          args: Prisma.TimetableExceptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.TimetableExceptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TimetableExceptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TimetableExceptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.TimetableExceptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TimetableExceptionPayload>
+        }
+        aggregate: {
+          args: Prisma.TimetableExceptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTimetableException>
+        }
+        groupBy: {
+          args: Prisma.TimetableExceptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimetableExceptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TimetableExceptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TimetableExceptionCountAggregateOutputType> | number
+        }
+      }
+    }
     CalendarEvent: {
       payload: Prisma.$CalendarEventPayload<ExtArgs>
       fields: Prisma.CalendarEventFieldRefs
@@ -975,6 +1050,20 @@ export const TimetableEntryScalarFieldEnum = {
 } as const
 
 export type TimetableEntryScalarFieldEnum = (typeof TimetableEntryScalarFieldEnum)[keyof typeof TimetableEntryScalarFieldEnum]
+
+
+export const TimetableExceptionScalarFieldEnum = {
+  id: 'id',
+  entryId: 'entryId',
+  date: 'date',
+  status: 'status',
+  newStartTime: 'newStartTime',
+  newEndTime: 'newEndTime',
+  reason: 'reason',
+  createdAt: 'createdAt'
+} as const
+
+export type TimetableExceptionScalarFieldEnum = (typeof TimetableExceptionScalarFieldEnum)[keyof typeof TimetableExceptionScalarFieldEnum]
 
 
 export const CalendarEventScalarFieldEnum = {
@@ -1177,6 +1266,7 @@ export type GlobalOmitConfig = {
   note?: Prisma.NoteOmit
   attendanceRecord?: Prisma.AttendanceRecordOmit
   timetableEntry?: Prisma.TimetableEntryOmit
+  timetableException?: Prisma.TimetableExceptionOmit
   calendarEvent?: Prisma.CalendarEventOmit
 }
 
